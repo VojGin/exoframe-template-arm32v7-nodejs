@@ -1,0 +1,12 @@
+{
+  "name": "exoframe-template-arm32v7-nodejs",
+  "version": "0.0.1",
+  "description": "NodeJS deployment template for exoframe",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Vojtěch Gintner <vojtechgintner@gmail.com> (http://vojgin.com)",
+  "license": "MIT"
+}

@@ -1,6 +1,6 @@
 {
   "name": "exoframe-template-arm32v7-nodejs",
-  "version": "0.0.1",
+  "version": "0.0.1c",
   "description": "NodeJS deployment template for exoframe",
   "main": "index.js",
   "scripts": {
@@ -8,5 +8,9 @@
   },
   "keywords": [],
   "author": "Vojtěch Gintner <vojtechgintner@gmail.com> (http://vojgin.com)",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/VojGin/exoframe-template-arm32v7-nodejs.git"
+  },
   "license": "MIT"
 }

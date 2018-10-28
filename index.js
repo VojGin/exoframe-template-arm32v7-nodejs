@@ -9,6 +9,9 @@ const nodeDockerfile = ({hasYarn}) =>
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
+#update npm
+RUN npm install npm -g
+
 # copy package and yarn files to cache deps install
 COPY package.json /usr/src/app/${
     hasYarn
@@ -16,7 +19,7 @@ COPY package.json /usr/src/app/${
 COPY yarn.lock /usr/src/app/
 RUN yarn install --production`
       : `
-RUN npm install --production`
+RUN npm install --only=prod`
   }
 
 # copy app itself
@@ -29,7 +32,7 @@ CMD ["npm", "start"]
 `;
 
 // template name
-exports.name = 'node';
+exports.name = 'exoframe-template-arm32v7-nodejs';
 
 // function to check if the template fits this recipe
 exports.checkTemplate = async ({tempDockerDir}) => {

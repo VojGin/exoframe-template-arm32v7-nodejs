@@ -1,6 +1,6 @@
 {
   "name": "exoframe-template-arm32v7-nodejs",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "NodeJS deployment template for exoframe",
   "main": "index.js",
   "scripts": {

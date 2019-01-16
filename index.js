@@ -3,14 +3,24 @@ const fs = require('fs');
 const path = require('path');
 
 const nodeDockerfile = ({hasYarn}) =>
-  `FROM yobasystems/alpine-nodejs:arm32v7-min
+  `FROM yobasystems/alpine-nodejs:armhf-current
 
 # create folder and set it as workdir
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
+#update dependencies
+RUN apk update
+RUN apk upgrade
+
+#add dependencies
+RUN apk add -U curl git make gcc g++ python linux-headers paxctl libgcc libstdc++ binutils-gold ca-certificates
+
 #update npm
 RUN npm install npm -g
+
+#add yarn
+RUN npm install yarn -g
 
 # copy package and yarn files to cache deps install
 COPY package.json /usr/src/app/${

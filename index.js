@@ -32,6 +32,9 @@ RUN yarn install --production`
 RUN npm install --only=prod`
   }
 
+#add dependencies
+RUN apk del -U curl python
+
 # copy app itself
 COPY . /usr/src/app
 

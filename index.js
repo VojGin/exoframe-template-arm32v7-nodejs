@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 const nodeDockerfile = ({hasYarn}) =>
-  `FROM yobasystems/alpine-nodejs:armhf-current
+  `FROM yobasystems/alpine-nodejs:arm32v7-min
 
 # create folder and set it as workdir
 RUN mkdir -p /usr/src/app

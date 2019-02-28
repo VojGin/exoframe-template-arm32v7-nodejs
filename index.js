@@ -6,17 +6,17 @@ const yarnOrNpm = ({hasYarn, hasLock}) => {
   let installString = 'COPY package.json /usr/src/app/';
 
   if (hasYarn) {
-    installString += `\nCOPY yarn.lock /usr/src/app/\nRUN yarn --silent`;
+    installString += `\nCOPY yarn.lock /usr/src/app/\nRUN yarn --silent --production`;
   } else if (hasLock) {
-    installString += `\nCOPY package-lock.json /usr/src/app/\nRUN npm ci --silent`;
+    installString += `\nCOPY package-lock.json /usr/src/app/\nRUN npm install --silent --only=prod`;
   } else {
-    installString += `\nRUN npm install --silent`;
+    installString += `\nRUN npm install --silent --only=prod`;
   }
 
   return installString;
 };
 
-const nodeDockerfile = ({hasYarn}) =>
+const nodeDockerfile = ({hasYarn, hasLock}) =>
   `FROM yobasystems/alpine-nodejs:arm32v7-min
 
 # create folder and set it as workdir

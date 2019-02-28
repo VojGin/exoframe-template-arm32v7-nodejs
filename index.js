@@ -2,22 +2,8 @@
 const fs = require('fs');
 const path = require('path');
 
-const yarnOrNpm = ({hasYarn, hasLock}) => {
-  let installString = 'COPY package.json /usr/src/app/';
-
-  if (hasYarn) {
-    installString += `\nCOPY yarn.lock /usr/src/app/\nRUN yarn --silent --production`;
-  } else if (hasLock) {
-    installString += `\nCOPY package-lock.json /usr/src/app/\nRUN npm install --silent --only=prod`;
-  } else {
-    installString += `\nRUN npm install --silent --only=prod`;
-  }
-
-  return installString;
-};
-
-const nodeDockerfile = ({hasYarn, hasLock}) =>
-  `FROM yobasystems/alpine-nodejs:arm32v7-min
+const nodeDockerfile = () =>
+`FROM yobasystems/alpine-nodejs:arm32v7-min
 
 # create folder and set it as workdir
 RUN mkdir -p /usr/src/app
@@ -33,11 +19,9 @@ RUN apk add -U curl git make gcc g++ python linux-headers paxctl libgcc libstdc+
 #update npm
 RUN npm install npm -g
 
-#add yarn
-RUN npm install yarn -g
-
-# copy package and yarn files to cache deps install
-${yarnOrNpm({hasYarn, hasLock})}
+# copy package.json and install
+COPY package.json /usr/src/app/
+RUN npm install --silent --only=prod
 
 #add dependencies
 RUN apk del -U curl python
@@ -72,14 +56,10 @@ exports.checkTemplate = async ({tempDockerDir, folder}) => {
 exports.executeTemplate = async ({username, tempDockerDir, folder, resultStream, util, docker, existing}) => {
   try {
     // generate dockerfile
-    const filesList = fs.readdirSync(path.join(tempDockerDir, folder));
-    const dockerfile = nodeDockerfile({
-      hasYarn: filesList.includes('yarn.lock'),
-      hasLock: filesList.includes('package-lock.json'),
-    });
+    const dockerfile = nodeDockerfile();
     const dfPath = path.join(tempDockerDir, folder, 'Dockerfile');
     fs.writeFileSync(dfPath, dockerfile, 'utf-8');
-    util.writeStatus(resultStream, {message: 'Deploying Node.js project..', level: 'info'});
+    util.writeStatus(resultStream, {message: 'Deploying Node.js project on armhf..', level: 'info'});
 
     // build docker image
     const buildRes = await docker.build({username, folder, resultStream});
